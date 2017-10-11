@@ -1,0 +1,6 @@
+body{
+  color:grey;
+  font-size: 15px;
+  padding-left: 10px;
+  
+}
