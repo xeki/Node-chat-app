@@ -15,4 +15,5 @@ var socket = io();
    socket.on("newMessage",function (message) {
      console.log("New Message ",message);
    });
+
   // socket.emit("createMessage",{from:"andi@gmial.com",text:"Still in jail, what a time?!"});

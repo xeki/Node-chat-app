@@ -13,6 +13,9 @@ var io = socketIO(server);
 
 io.on('connection',function (socket){
   console.log("new user connected");
+  socket.emit("newMessage",{from:"Admin",text:"Welcome to our chat room","createdAt":new Date().getTime()});
+  socket.broadcast.emit("newMessage",{from:"Admin",text:"New user joined the chat room","createdAt":new Date().getTime()});
+
   socket.emit("newEmail",{from:"mike@example.com",subject:"greeting",text:"What't going on?"});
 
   socket.on("createEmail",function (newEmail){
@@ -26,7 +29,9 @@ io.on('connection',function (socket){
   // socket.emit("newMessage",{from:"me",text:"are you there?",createdAt:new Date().toString()});
   socket.on("createMessage",function (message) {
     console.log("New message from client: ",message);
-    io.emit('newMessage',{from:message.from,text:message.text,createdAt:new Date().getTime()});
+    // io.emit('newMessage',{from:message.from,text:message.text,createdAt:new Date().getTime()});
+
+    socket.broadcast.emit("newMessage",{from:message.text,text:message.text,createdAt:new Date().getTime()});
   });
 
 });
