@@ -23,9 +23,10 @@ io.on('connection',function (socket){
       console.log("user disconnected");
   });
 
-  socket.emit("newMessage",{from:"me",text:"are you there?",createdAt:new Date().toString()});
+  // socket.emit("newMessage",{from:"me",text:"are you there?",createdAt:new Date().toString()});
   socket.on("createMessage",function (message) {
     console.log("New message from client: ",message);
+    io.emit('newMessage',{from:message.from,text:message.text,createdAt:new Date().getTime()});
   });
 
 });
