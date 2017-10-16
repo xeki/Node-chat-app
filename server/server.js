@@ -11,12 +11,25 @@ const app = express();
 var server = http.createServer(app);
 var io = socketIO(server);
 
-io.on('connection',(socket)=>{
+io.on('connection',function (socket){
   console.log("new user connected");
-  socket.on("disconnect",()=>{
-    console.log("user disconnected");
-  })
+  socket.emit("newEmail",{from:"mike@example.com",subject:"greeting",text:"What't going on?"});
+
+  socket.on("createEmail",function (newEmail){
+    console.log("createEmail",newEmail);
+  });
+
+  socket.on("disconnect",function () {
+      console.log("user disconnected");
+  });
+
+  socket.emit("newMessage",{from:"me",text:"are you there?",createdAt:new Date().toString()});
+  socket.on("createMessage",function (message) {
+    console.log("New message from client: ",message);
+  });
+
 });
+
 
 const PORT = process.env.PORT|| 3000;
 app.use(express.static(publicPath));
