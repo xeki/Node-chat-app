@@ -1,7 +1,14 @@
 var socket = io();
     socket.on("connect",function(){
-    console.log("Connected to server");
-    // socket.emit("createEmail",{to:"andrew@example.com",text:"How are you doing buddy"});
+      var params = $.deparam(window.location.search);
+      socket.emit("join",params,function (err) {
+        if(err){
+            alert(err);
+            window.location.href="/";
+        }else {
+              console.log("No error");
+        }
+      });
     });
 
 
@@ -42,6 +49,15 @@ var socket = io();
     $("#messages").append(html);
     ScrollToBottom();
   });
+
+  socket.on("updateUserList",function (users) {
+    var ol = $("<ol></ol>");
+    users.forEach(function (user) {
+      ol.append($("<li></li>").text(user));
+    });
+
+    $("#users").html(ol);
+  })
 
   jQuery("#message-form").on("submit",function (e) {
     e.preventDefault();
